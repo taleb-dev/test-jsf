@@ -18,4 +18,5 @@ It also has a [very comprehensive guide](https://www.primefaces.org/docs/guide/p
 
 
 `h:head` element is necessary in JSF because it loads all the required JS libraries.  
-`h:form` element is also necessary otherwise `autoComplete` or `p:ajax` constructs will not work.
+`h:form` element is also necessary otherwise `autoComplete` or `p:ajax` constructs will not work.  
+Also make sure to go through the common gotchas on [this stackoverflow link](https://stackoverflow.com/questions/2118656/commandbutton-commandlink-ajax-action-listener-method-not-invoked-or-input-value)
