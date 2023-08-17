@@ -1,35 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:p="http://primefaces.org/ui"
-    xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
 
 <h:head>
     <title>Primefaces Examples</title>
 </h:head>
 <h:body>
-
-    <p:editor style="width:1000px" />
-
-    <p:accordionPanel style="width:500px">
-        <p:tab title="First Tab">
-            <h:outputText value="Tab 1"/>
-        </p:tab>
-        <p:tab title="Second Tab">
-            <h:outputText value="Tab 2"/>
-        </p:tab>
-    </p:accordionPanel>
-
     <h:form>
-        <h:inputText id="counter">
-            <p:ajax update="out" listener="#{counterBean.increment}" />
-        </h:inputText>
-        <h:outputText id="out" value="#{counterBean.count}" />
+        <h5 class="mt-0">Basic</h5>
+        <h:panelGrid columns="3" cellpadding="7">
+            <p:outputLabel for="name" value="Name"/>
+            <p:inputText id="name" value="#{newUser.name}"/>
+        </h:panelGrid>
+        <h:panelGrid columns="3" cellpadding="7">
+            <p:outputLabel for="name" value="Age"/>
+            <p:inputNumber id="age"  value="#{newUser.age}" minValue="1" decimalPlaces="0"/>
+        </h:panelGrid>
+        <p:commandButton value="Submit" update="users"  action="#{newUser.save}" styleClass="mt-3" />
 
-        <p:autoComplete value="#{autoCompleteBean.text}" completeMethod="#{autoCompleteBean.complete}" />
+    <p:divider/>
+        <div class="card">
+            <p:dataTable id="users" var="user" value="#{dtBasicView.users}">
+                <p:column headerText="Name">
+                    <h:outputText value="#{user.name}"/>
+                </p:column>
+                <p:column headerText="Age">
+                    <h:outputText value="#{user.age}"/>
+                </p:column>
+
+                <p:column headerText="Action">
+                    <p:commandButton actionListener="#{dtBasicView.deleteUser(user)}"
+                                     update="users" icon="pi pi-trash"
+                                     styleClass="ui-button-danger"
+                                     title="Delete">
+                        <f:attribute name="user" value="#{user}"/>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+        </div>
     </h:form>
 
 </h:body>
