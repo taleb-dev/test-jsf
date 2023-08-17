@@ -21,10 +21,12 @@
             <p:outputLabel for="name" value="Age"/>
             <p:inputNumber id="age"  value="#{newUser.age}" minValue="1" decimalPlaces="0"/>
         </h:panelGrid>
-        <p:commandButton value="Submit" update="users"  action="#{newUser.save}" styleClass="mt-3" />
-
+        <p:commandButton value="Submit" update=":view:users"  action="#{newUser.save}" styleClass="mt-3" />
+    </h:form>
     <p:divider/>
-        <div class="card">
+    <h:form id="view">
+
+    <div class="card">
             <p:dataTable id="users" var="user" value="#{dtBasicView.users}">
                 <p:column headerText="Name">
                     <h:outputText value="#{user.name}"/>
