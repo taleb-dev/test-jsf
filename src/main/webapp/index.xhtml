@@ -10,43 +10,76 @@
 <h:head>
     <title>Primefaces Examples</title>
 </h:head>
-<h:body>
+<h:body dir="RTL">
     <h:form>
-        <h5 class="mt-0">Basic</h5>
-        <h:panelGrid columns="3" cellpadding="7">
-            <p:outputLabel for="name" value="Name"/>
-            <p:inputText id="name" value="#{newUser.name}"/>
-        </h:panelGrid>
-        <h:panelGrid columns="3" cellpadding="7">
-            <p:outputLabel for="name" value="Age"/>
-            <p:inputNumber id="age"  value="#{newUser.age}" minValue="1" decimalPlaces="0"/>
-        </h:panelGrid>
-        <p:commandButton value="Submit" update=":view:users"  action="#{newUser.save}" styleClass="mt-3" />
-    </h:form>
-    <p:divider/>
-    <h:form id="view">
-
-    <div class="card">
-            <p:dataTable id="users" var="user" value="#{dtBasicView.users}">
-                <p:column headerText="Name">
-                    <h:outputText value="#{user.name}"/>
-                </p:column>
-                <p:column headerText="Age">
-                    <h:outputText value="#{user.age}"/>
-                </p:column>
-
-                <p:column headerText="Action">
-                    <p:commandButton actionListener="#{dtBasicView.deleteUser(user)}"
-                                     update="users" icon="pi pi-trash"
-                                     styleClass="ui-button-danger"
-                                     title="Delete">
-                        <f:attribute name="user" value="#{user}"/>
-                    </p:commandButton>
-                </p:column>
-
-            </p:dataTable>
+        <p:panelGrid columns="3">
+            <p:panelGrid columns="1" style="width: 33%">
+                <h2>المنافذ الجوية</h2>
+                <p:outputLabel for="air" value="إجمالي بحصة المنافذ الجوية"/>
+                <p:inputNumber id="air" value="#{quoteView.airQuote}" minValue="0" decimalPlaces="0">
+                    <p:ajax event="keyup" update="messages remaing :showAirForm"
+                            listener="#{quoteView.handleQuoteRemain}"/>
+                </p:inputNumber>
+            </p:panelGrid>
+            <p:panelGrid columns="1" style="width: 33%">
+                <h2>المنافذ البرية</h2>
+                <p:outputLabel for="land" value="إجمالي بحصة المنافذ البرية"/>
+                <p:inputNumber id="land" value="#{quoteView.landQuote}" minValue="0" decimalPlaces="0">
+                    <p:ajax event="keyup" update="messages remaing" listener="#{quoteView.handleQuoteRemain}"/>
+                </p:inputNumber>
+            </p:panelGrid>
+            <p:panelGrid columns="1" style="width: 33%">
+                <h2>المنافذ البحرية</h2>
+                <p:outputLabel for="sea" value="إجمالي بحصة المنافذ البحرية"/>
+                <p:inputNumber id="sea" value="#{quoteView.seaQuote}" minValue="0" decimalPlaces="0">
+                    <p:ajax event="keyup" update="messages remaing" listener="#{quoteView.handleQuoteRemain}"/>
+                </p:inputNumber>
+            </p:panelGrid>
+        </p:panelGrid>
+        <p:messages id="messages" showDetail="true" closable="true">
+            <p:autoUpdate/>
+        </p:messages>
+        <div>
+            الحصة المتبقية
+            <h:outputText id="remaing" value="#{quoteView.remainQuote}"/>
         </div>
     </h:form>
+    <h:panelGroup id="showAirForm" >
+    <h:form id="airForm" >
+        <p:panelGrid columns="1">
+            <h2>المنافذ الجوية(اختياري)</h2>
+            <span>يمكنك توزيع إجمالي حصة المنافذ الجوية على المنافذ التي تريدها</span>
+            <div>
+                <h2>الحصة المتبقية</h2>
+                <h:outputText id="airReming" value="#{quoteView.airRemaingQuote}"/>
+            </div>
+            <p:selectOneMenu id="airPort" value="#{quoteView.airCurrentPort}" style="width:150px">
+                <f:selectItem itemLabel="Select port" itemValue="" noSelectionOption="true"/>
+                <f:selectItems value="#{quoteView.luPorts}"/>
+            </p:selectOneMenu>
+            <p:inputNumber id="currentAirValue" value="#{quoteView.airCurrentQuote}" modifyValueOnWheel="false" />
+            <p:commandButton value="Add" action="#{quoteView.addAirQuote}" update="showAirForm "/>
+            <p:divider/>
+                <div class="card">
+                    <p:dataTable id="viewAirTable" var="port" value="#{quoteView.airPorts}">
+                        <p:column headerText="اسم المنفذ">
+                            <h:outputText value="#{port.port.name}" />
+                        </p:column>
 
+                        <p:column headerText="الحصة">
+                            <h:outputText value="#{port.quote}" />
+                        </p:column>
+                        <p:column headerText="">
+                            <p:commandButton action="#{quoteView.deleteAir(port)}"
+                                             update="showAirForm" icon="pi pi-trash"
+                                             styleClass="ui-button-danger"
+                                             title="Delete">
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+        </p:panelGrid>
+    </h:form>
+    </h:panelGroup>
 </h:body>
 </html>
